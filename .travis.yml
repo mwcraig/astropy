@@ -101,4 +101,4 @@ script:
 
 after_success:
     - if [[ $SETUP_CMD == 'test --coverage' ]]; then coveralls --rcfile='astropy/tests/coveragerc'; fi
-    - if [[ $TRAVIS_BRANCH == 'master' && $TRAVIS_PULL_REQUEST == "false " && CONDA_PY != "no" ]]; then source deactivate; conda install --yes conda-build; python setup.py bdist_conda; fi
+    - if [[ $TRAVIS_BRANCH == 'master' && $TRAVIS_PULL_REQUEST == 'false' && CONDA_PY != "no" ]]; then source deactivate; conda install --yes conda-build; python setup.py bdist_conda; fi
