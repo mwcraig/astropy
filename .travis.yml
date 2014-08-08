@@ -31,10 +31,10 @@ matrix:
 
         # Try all python versions with the latest numpy
         - python: 2.6
-          env: SETUP_CMD='test'
+          env: SETUP_CMD='egg_info'
         - python: 2.7
           env:
-            - SETUP_CMD='test'
+            - SETUP_CMD='egg_info'
             - CONDA_PY='27'
             - CONDA_NP=18
         # - python: 3.2
