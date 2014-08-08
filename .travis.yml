@@ -12,6 +12,7 @@ env:
         # Set defaults to avoid repeating in most cases
         - NUMPY_VERSION=1.8
         - OPTIONAL_DEPS=false
+        - CONDA_PY=no
     matrix:
         - SETUP_CMD='egg_info'
 
@@ -32,6 +33,10 @@ matrix:
         - python: 2.6
           env: SETUP_CMD='test'
         - python: 2.7
+          env:
+            - SETUP_CMD='test'
+            - CONDA_PY='27'
+            - CONDA_NP=18
         # - python: 3.2
         #   env: SETUP_CMD='test'
         # - python: 3.3
@@ -96,3 +101,4 @@ script:
 
 after_success:
     - if [[ $SETUP_CMD == 'test --coverage' ]]; then coveralls --rcfile='astropy/tests/coveragerc'; fi
+    - if [[ $TRAVIS_BRANCH == 'master' && $TRAVIS_PULL_REQUEST == "false " && CONDA_PY != "no" ]]; then source deactivate; conda install --yes conda-build; python setup.py bdist_conda; fi
