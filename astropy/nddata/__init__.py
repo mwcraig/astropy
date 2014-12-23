@@ -18,6 +18,8 @@ from .slicing import *
 from .io import *
 from .compat import *
 
+from ..io.fits import connect_nddata
+
 from .. import config as _config
 
 

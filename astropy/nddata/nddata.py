@@ -9,6 +9,7 @@ import collections
 import numpy as np
 
 from .nddatabase import NDDataBase
+from .io import NDIOMixin
 from ..units import Unit, Quantity
 from .. import log
 from ..utils.compat.odict import OrderedDict
@@ -26,7 +27,7 @@ WARN_UNSUPPORTED_CORRELATED = ConfigAlias(
     'astropy.nddata.nddata', 'astropy.nddata')
 
 
-class NDData(NDDataBase):
+class NDData(NDDataBase, NDIOMixin):
     """
     A basic class for array-based data.
 
