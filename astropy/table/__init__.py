@@ -25,7 +25,7 @@ from .operations import join, hstack, vstack, unique, TableMergeError
 
 # Import routines that connect readers/writers to astropy.table
 from ..io.ascii import connect
-from ..io.fits import connect
+from ..io.fits import connect_table
 from ..io.misc import connect
 from ..io.votable import connect
 from . import jsviewer
