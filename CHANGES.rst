@@ -126,7 +126,7 @@ New Features
     yield tables with an "idx" column, allowing easy identification of the index
     of a row even when the table is re-sorted in the browser. [#4404]
 
-  - Added ``AttributeError`` when trying to set mask on non-masked table. [#3505]
+  - Added ``AttributeError`` when trying to set mask on non-masked table. [#4637]
 
   - Allow to use a tuple of keys in ``Table.sort``.  [#4671]
 
