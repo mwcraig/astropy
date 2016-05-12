@@ -1560,7 +1560,7 @@ Bug Fixes
 - ``astropy.io.ascii``
 
   - Fixed addition of new line characters after last row of data in
-    ascii.latex.AASTex. [#3888]
+    ascii.latex.AASTex. [#4561]
 
   - Fixed reading of Latex tables where the ``\tabular`` tag is in the first
     line. [#4595]
