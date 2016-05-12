@@ -4,7 +4,7 @@
 General
 ^^^^^^^
 
-Astropy now requires Numpy 1.7.0 or later.
+Astropy now requires Numpy 1.7.0 or later. [#4784]
 
 New Features
 ^^^^^^^^^^^^
@@ -100,6 +100,7 @@ New Features
   - ``NDDataRef`` new subclass that implements ``NDData`` together with all
     currently avaiable mixins. This class does not implement additional
     attributes, methods or a numpy.ndarray-like interface like ``NDDataArray``.
+    attributes, methods or a numpy.ndarray-like interface like ``NDDataArray``. 
     [#4797]
 
 - ``astropy.stats``
@@ -1513,7 +1514,7 @@ Bug Fixes
 
 - ``astropy.tests``
 
-  - Fix coverage reporting in Python 3.
+  - Fix coverage reporting in Python 3. [#4822]
 
 - ``astropy.time``
 
