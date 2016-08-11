@@ -783,7 +783,7 @@ def median_absolute_deviation(a, axis=None, ignore_nan=False):
     return func(np.abs(a - a_median), axis=axis)
 
 
-def mad_std(data, axis=None):
+def mad_std(data, axis=None, ignore_nan=False):
     """
     Calculate a robust standard deviation using the `median absolute
     deviation (MAD)
@@ -807,6 +807,11 @@ def mad_std(data, axis=None):
         Axis along which the robust standard deviations are computed.
         The default (`None`) is to compute the robust standard deviation
         of the flattened array.
+    ignore_nan : bool
+        Ignore NaN values (treat them as if they are not in the array) when
+        computing the median.  This will use `np.nanmedian`, which requires
+        np >= 1.9.  Note that this is not compatible with masked arrays; if you
+        have a masked array, you should mask out the NaN values.
 
     Returns
     -------
@@ -830,7 +835,8 @@ def mad_std(data, axis=None):
     """
 
     # NOTE: 1. / scipy.stats.norm.ppf(0.75) = 1.482602218505602
-    return median_absolute_deviation(data, axis=axis) * 1.482602218505602
+    MAD = median_absolute_deviation(data, axis=axis, ignore_nan=ignore_nan)
+    return MAD * 1.482602218505602
 
 
 def biweight_location(a, c=6.0, M=None, axis=None):
