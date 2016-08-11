@@ -15,7 +15,9 @@ import math
 
 import numpy as np
 
-from ..extern.six.moves import range
+from astropy.utils.compat import NUMPY_LT_1_10
+
+from ..extern.six.moves import range, xrange
 
 
 __all__ = ['binom_conf_interval', 'binned_binom_proportion',
@@ -768,8 +770,18 @@ def median_absolute_deviation(a, axis=None, ignore_nan=False):
     # returns an masked array even if the result should be scalar). (#4658)
     if isinstance(a, np.ma.MaskedArray):
         func = np.ma.median
+        if ignore_nan:
+            data = np.ma.masked_invalid(data)
     elif ignore_nan:
-        func = np.nanmedian
+        if NUMPY_LT_1_10:
+            # older versions don't have nanmedian, but nanmedian
+            # is generally faster than np.ma.median (at least, that is implied
+            # in
+            # https://github.com/astropy/astropy/pull/5232#issuecomment-239173872)
+            data = np.ma.masked_invalid(data)
+            func = np.ma.median
+        else:
+            func = np.nanmedian
     else:
         func = np.median
 
