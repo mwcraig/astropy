@@ -440,6 +440,17 @@ def test_mad_std():
         data = normal(5, 2, size=(100, 100))
         assert_allclose(funcs.mad_std(data), 2.0, rtol=0.05)
 
+def test_mad_std_withnan():
+    with NumpyRNGContext(12345):
+        data = np.empty([102,102])
+        data[:] = np.nan
+        data[1:-1,1:-1] = normal(5, 2, size=(100, 100))
+        assert_allclose(funcs.mad_std(data, ignore_nan=True), 2.0, rtol=0.05)
+
+    assert np.isnan(funcs.mad_std([1,2,3,4,5,np.nan]))
+    assert_allclose(funcs.mad_std([1,2,3,4,5,np.nan], ignore_nan=True),
+                    1.482602218505602)
+
 
 def test_mad_std_with_axis():
     data = np.array([[1, 2, 3, 4],

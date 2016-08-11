@@ -718,7 +718,7 @@ def poisson_conf_interval(n, interval='root-n', sigma=1, background=0,
     return conf_interval
 
 
-def median_absolute_deviation(a, axis=None):
+def median_absolute_deviation(a, axis=None, ignore_nan=False):
     """
     Calculate the median absolute deviation (MAD).
 
@@ -731,6 +731,11 @@ def median_absolute_deviation(a, axis=None):
     axis : int, optional
         Axis along which the MADs are computed.  The default (`None`) is
         to compute the MAD of the flattened array.
+    ignore_nan : bool
+        Ignore NaN values (treat them as if they are not in the array) when
+        computing the median.  This will use `np.nanmedian`, which requires
+        np >= 1.9.  Note that this is not compatible with masked arrays; if you
+        have a masked array, you should mask out the NaN values.
 
     Returns
     -------
@@ -763,6 +768,8 @@ def median_absolute_deviation(a, axis=None):
     # returns an masked array even if the result should be scalar). (#4658)
     if isinstance(a, np.ma.MaskedArray):
         func = np.ma.median
+    elif ignore_nan:
+        func = np.nanmedian
     else:
         func = np.median
 
