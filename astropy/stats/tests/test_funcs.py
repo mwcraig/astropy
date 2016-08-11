@@ -8,7 +8,7 @@ import numpy as np
 from numpy.random import randn, normal
 from numpy.testing import assert_equal
 from numpy.testing.utils import assert_allclose
-from astropy.utils.compat import NUMPY_LT_1P9
+from astropy.utils.compat import NUMPY_LT_1_9
 
 try:
     import scipy  # pylint: disable=W0611
@@ -441,7 +441,7 @@ def test_mad_std():
         data = normal(5, 2, size=(100, 100))
         assert_allclose(funcs.mad_std(data), 2.0, rtol=0.05)
 
-@pytest.mark.skipif('NUMPY_LT_1P9')
+@pytest.mark.skipif('NUMPY_LT_1_9')
 def test_mad_std_withnan():
     with NumpyRNGContext(12345):
         data = np.empty([102,102])
