@@ -733,7 +733,7 @@ def median_absolute_deviation(a, axis=None, ignore_nan=False):
         to compute the MAD of the flattened array.
     ignore_nan : bool
         Ignore NaN values (treat them as if they are not in the array) when
-        computing the median.  This will use `np.nanmedian`, which requires
+        computing the median.  This will use `numpy.nanmedian`, which requires
         np >= 1.9.  Note that this is not compatible with masked arrays; if you
         have a masked array, you should mask out the NaN values.
 
@@ -809,7 +809,7 @@ def mad_std(data, axis=None, ignore_nan=False):
         of the flattened array.
     ignore_nan : bool
         Ignore NaN values (treat them as if they are not in the array) when
-        computing the median.  This will use `np.nanmedian`, which requires
+        computing the median.  This will use `numpy.nanmedian`, which requires
         np >= 1.9.  Note that this is not compatible with masked arrays; if you
         have a masked array, you should mask out the NaN values.
 

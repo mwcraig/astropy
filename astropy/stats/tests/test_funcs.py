@@ -9,6 +9,8 @@ from numpy.random import randn, normal
 from numpy.testing import assert_equal
 from numpy.testing.utils import assert_allclose
 
+NUMPY_LT_1P9 = [int(x) for x in np.__version__.split('.')[:2]] < [1, 9]
+
 try:
     import scipy  # pylint: disable=W0611
 except ImportError:
@@ -440,6 +442,7 @@ def test_mad_std():
         data = normal(5, 2, size=(100, 100))
         assert_allclose(funcs.mad_std(data), 2.0, rtol=0.05)
 
+@pytest.mark.skipif('NUMPY_LT_1P9')
 def test_mad_std_withnan():
     with NumpyRNGContext(12345):
         data = np.empty([102,102])
@@ -450,7 +453,6 @@ def test_mad_std_withnan():
     assert np.isnan(funcs.mad_std([1,2,3,4,5,np.nan]))
     assert_allclose(funcs.mad_std([1,2,3,4,5,np.nan], ignore_nan=True),
                     1.482602218505602)
-
 
 def test_mad_std_with_axis():
     data = np.array([[1, 2, 3, 4],
