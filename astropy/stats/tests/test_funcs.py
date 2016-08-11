@@ -8,8 +8,7 @@ import numpy as np
 from numpy.random import randn, normal
 from numpy.testing import assert_equal
 from numpy.testing.utils import assert_allclose
-
-NUMPY_LT_1P9 = [int(x) for x in np.__version__.split('.')[:2]] < [1, 9]
+from astropy.utils.compat import NUMPY_LT_1P9
 
 try:
     import scipy  # pylint: disable=W0611
