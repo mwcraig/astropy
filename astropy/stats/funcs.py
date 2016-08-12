@@ -778,13 +778,14 @@ def median_absolute_deviation(data, axis=None, ignore_nan=False):
         if ignore_nan:
             data = np.ma.masked_where(np.isnan(data), data)
     elif ignore_nan:
-        if NUMPY_LT_1_10 or axis is None:
+        if NUMPY_LT_1_10 or axis is not None:
             # older versions don't have nanmedian, but nanmedian
             # may be faster than np.ma.median *if* axis is None
             # https://gist.github.com/MSeifert04/1551e80e1aa85b48c9191e727c38f9a9
             data = np.ma.masked_where(np.isnan(data), data)
             func = np.ma.median
         else:
+            # faster when axis is None & numpy is recent
             func = np.nanmedian
     else:
         func = np.median
