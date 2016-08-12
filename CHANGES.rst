@@ -75,8 +75,8 @@ New Features
     ``biweight_midvariance``. [#5127, #5158]
 
   - ``median_absolute_deviation`` and ``mad_std`` have ``ignore_nan`` option
-    that will use ``np.nanmedian`` instead of ``np.median`` when computing the
-    median. [#5232]
+    that will use ``np.ma.median`` with nans masked out or ``np.nanmedian``
+    instead of ``np.median`` when computing the median. [#5232]
 
 - ``astropy.sphinx``
 

@@ -18,6 +18,8 @@ import numpy as np
 from warnings import warn
 
 from astropy.utils.compat import NUMPY_LT_1_10
+from astropy.utils.decorators import deprecated_renamed_argument
+
 
 from ..extern.six.moves import range, xrange
 
@@ -722,6 +724,7 @@ def poisson_conf_interval(n, interval='root-n', sigma=1, background=0,
     return conf_interval
 
 
+@deprecated_renamed_argument('a', 'data', '1.3')
 def median_absolute_deviation(data, axis=None, ignore_nan=False):
     """
     Calculate the median absolute deviation (MAD).
@@ -737,9 +740,9 @@ def median_absolute_deviation(data, axis=None, ignore_nan=False):
         to compute the MAD of the flattened array.
     ignore_nan : bool
         Ignore NaN values (treat them as if they are not in the array) when
-        computing the median.  This will use `numpy.nanmedian`, which requires
-        np >= 1.9.  Note that this is not compatible with masked arrays; if you
-        have a masked array, you should mask out the NaN values.
+        computing the median.  This will use `numpy.ma.median` if `axis` is
+        specified, or `numpy.nanmedian` if `axis=None` and numpy's version is
+        >1.10 because nanmedian is slightly faster in this case.
 
     Returns
     -------
@@ -832,9 +835,9 @@ def mad_std(data, axis=None, ignore_nan=False):
         of the flattened array.
     ignore_nan : bool
         Ignore NaN values (treat them as if they are not in the array) when
-        computing the median.  This will use `numpy.nanmedian`, which requires
-        np >= 1.9.  Note that this is not compatible with masked arrays; if you
-        have a masked array, you should mask out the NaN values.
+        computing the median.  This will use `numpy.ma.median` if `axis` is
+        specified, or `numpy.nanmedian` if `axis=None` and numpy's version is
+        >1.10 because nanmedian is slightly faster in this case.
 
     Returns
     -------
