@@ -477,6 +477,17 @@ def test_mad_std_with_axis():
     assert_allclose(funcs.mad_std(data, axis=0), result_axis0)
     assert_allclose(funcs.mad_std(data, axis=1), result_axis1)
 
+def test_mad_std_with_axis_and_nan():
+    data = np.array([[1, 2, 3, 4, np.nan],
+                     [4, 3, 2, 1, np.nan]])
+    # results follow data symmetry
+    result_axis0 = np.array([2.22390333, 0.74130111, 0.74130111,
+                             2.22390333, np.nan])
+    result_axis1 = np.array([1.48260222, 1.48260222])
+    assert_allclose(funcs.mad_std(data, axis=0, ignore_nan=True), result_axis0)
+    assert_allclose(funcs.mad_std(data, axis=1, ignore_nan=True), result_axis1)
+
+
 
 def test_gaussian_fwhm_to_sigma():
     fwhm = (2.0 * np.sqrt(2.0 * np.log(2.0)))
