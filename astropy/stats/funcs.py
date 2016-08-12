@@ -720,7 +720,7 @@ def poisson_conf_interval(n, interval='root-n', sigma=1, background=0,
     return conf_interval
 
 
-def median_absolute_deviation(a, axis=None, ignore_nan=False):
+def median_absolute_deviation(data, axis=None, ignore_nan=False):
     """
     Calculate the median absolute deviation (MAD).
 
@@ -768,31 +768,35 @@ def median_absolute_deviation(a, axis=None, ignore_nan=False):
     # See https://github.com/numpy/numpy/issues/7330 why using np.ma.median
     # for normal arrays should not be done (summary: np.ma.median always
     # returns an masked array even if the result should be scalar). (#4658)
-    if isinstance(a, np.ma.MaskedArray):
+    if isinstance(data, np.ma.MaskedArray):
         func = np.ma.median
         if ignore_nan:
-            data = np.ma.masked_invalid(data)
+            data = np.ma.masked_where(np.isnan(data), data)
     elif ignore_nan:
-        if NUMPY_LT_1_10:
+        if NUMPY_LT_1_10 or axis is None:
             # older versions don't have nanmedian, but nanmedian
-            # is generally faster than np.ma.median (at least, that is implied
-            # in
-            # https://github.com/astropy/astropy/pull/5232#issuecomment-239173872)
-            data = np.ma.masked_invalid(data)
+            # may be faster than np.ma.median *if* axis is None
+            # https://gist.github.com/MSeifert04/1551e80e1aa85b48c9191e727c38f9a9
+            data = np.ma.masked_where(np.isnan(data), data)
             func = np.ma.median
         else:
             func = np.nanmedian
     else:
         func = np.median
 
-    a = np.asanyarray(a)
-    a_median = func(a, axis=axis)
+    data = np.asanyarray(data)
+    data_median = func(data, axis=axis)
 
     # broadcast the median array before subtraction
     if axis is not None:
-        a_median = np.expand_dims(a_median, axis=axis)
+        data_median = np.expand_dims(data_median, axis=axis)
 
-    return func(np.abs(a - a_median), axis=axis)
+    result = func(np.abs(data - data_median), axis=axis)
+
+    if axis is None and np.ma.isMaskedArray(result):
+        result = result.item()
+
+    return result
 
 
 def mad_std(data, axis=None, ignore_nan=False):
