@@ -454,7 +454,11 @@ def test_mad_std_scalar_return():
         rslt = funcs.mad_std(data, ignore_nan=True)
         assert np.isscalar(rslt)
         rslt = funcs.mad_std(data)
-        assert np.isnan(rslt)
+        if not NUMPY_LT_1_10:
+            assert np.isnan(rslt)
+        else:
+            # TODO: check that the appropriate warning is raised
+            pass
 
 def test_mad_std_withnan():
     with NumpyRNGContext(12345):

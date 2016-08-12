@@ -15,6 +15,8 @@ import math
 
 import numpy as np
 
+from warnings import warn
+
 from astropy.utils.compat import NUMPY_LT_1_10
 
 from ..extern.six.moves import range, xrange
@@ -783,6 +785,11 @@ def median_absolute_deviation(data, axis=None, ignore_nan=False):
             func = np.nanmedian
     else:
         func = np.median
+
+    if not ignore_nan and np.any(np.isnan(data)) and NUMPY_LT_1_10:
+        warn("Numpy versions <1.10 will return a number rather than NaN for "
+             "the median of arrays containing NaNs.  This behavior is "
+             "unlikely to be what you expect.")
 
     data = np.asanyarray(data)
     data_median = func(data, axis=axis)
