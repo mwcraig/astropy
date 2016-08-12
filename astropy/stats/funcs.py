@@ -790,7 +790,7 @@ def median_absolute_deviation(data, axis=None, ignore_nan=False):
     else:
         func = np.median
 
-    if not ignore_nan and np.any(np.isnan(data)) and NUMPY_LT_1_10:
+    if not ignore_nan and NUMPY_LT_1_10 and np.any(np.isnan(data)):
         warn("Numpy versions <1.10 will return a number rather than NaN for "
              "the median of arrays containing NaNs.  This behavior is "
              "unlikely to be what you expect.")
