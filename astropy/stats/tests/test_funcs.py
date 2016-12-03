@@ -441,7 +441,7 @@ def test_mad_std():
         data = normal(5, 2, size=(100, 100))
         assert_allclose(funcs.mad_std(data), 2.0, rtol=0.05)
 
-def test_mad_std_scalar_return():
+def test_mad_std_scalar_return(recwarn):
     with NumpyRNGContext(12345):
         data = normal(5, 2, size=(10, 10))
         # make a masked array with no masked points
@@ -457,8 +457,8 @@ def test_mad_std_scalar_return():
         if not NUMPY_LT_1_10:
             assert np.isnan(rslt)
         else:
-            # TODO: check that the appropriate warning is raised
-            pass
+            w = recwarn.pop()
+            assert str(w.message).startswith("Numpy versions <1.10 will return")
 
 def test_mad_std_withnan():
     with NumpyRNGContext(12345):
@@ -467,7 +467,8 @@ def test_mad_std_withnan():
         data[1:-1,1:-1] = normal(5, 2, size=(100, 100))
         assert_allclose(funcs.mad_std(data, ignore_nan=True), 2.0, rtol=0.05)
 
-    assert np.isnan(funcs.mad_std([1,2,3,4,5,np.nan]))
+    if not NUMPY_LT_1_10:
+        assert np.isnan(funcs.mad_std([1,2,3,4,5,np.nan]))
     assert_allclose(funcs.mad_std([1,2,3,4,5,np.nan], ignore_nan=True),
                     1.482602218505602)
 
@@ -488,7 +489,7 @@ def test_mad_std_with_axis_and_nan():
     result_axis0 = np.array([2.22390333, 0.74130111, 0.74130111,
                              2.22390333, np.nan])
     result_axis1 = np.array([1.48260222, 1.48260222])
-    assert_allclose(funcs.mad_std(data, axis=0, ignore_nan=True), result_axis0)
+    assert np.ma.allclose(funcs.mad_std(data, axis=0, ignore_nan=True), result_axis0)
     assert_allclose(funcs.mad_std(data, axis=1, ignore_nan=True), result_axis1)
 
 
