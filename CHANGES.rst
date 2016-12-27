@@ -10,6 +10,10 @@ New Features
 
 - ``astropy.convolution``
 
+  - Add a new argument, ``normalization_rtol``, to ``convolve_fft``, allowing
+    the user to specify the relative error tolerance in the normalization of
+    the convolution kernel. [#5649, #5177]
+
 - ``astropy.coordinates``
 
   - Frame attributes set on ``SkyCoord`` are now always validated, and any
