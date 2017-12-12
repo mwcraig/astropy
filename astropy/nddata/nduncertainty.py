@@ -366,8 +366,13 @@ class _VariancePropagationMixin:
     variance).
     """
     def _propagate_add_sub(self, other_uncert, result_data, correlation,
-                           add_or_subtract,
+                           subtract=False,
                            to_variance=lambda x: x, from_variance=lambda x: x):
+
+        if subtract:
+            correlation_sign = -1
+        else:
+            correlation_sign = 1
 
         if self.array is None:
             # Formula: sigma = dB
@@ -417,7 +422,7 @@ class _VariancePropagationMixin:
             # Determine the result depending on the correlation
             if isinstance(correlation, np.ndarray) or correlation != 0:
                 corr = 2 * correlation * np.sqrt(this * other)
-                result = this + other + add_or_subtract * corr
+                result = this + other + correlation_sign * corr
             else:
                 result = this + other
 
@@ -599,13 +604,13 @@ class StdDevUncertainty(_VariancePropagationMixin, NDUncertainty):
 
     def _propagate_add(self, other_uncert, result_data, correlation):
         return super()._propagate_add_sub(other_uncert, result_data,
-                                          correlation, 1,
+                                          correlation, subtract=False,
                                           to_variance=lambda x: x**2,
                                           from_variance=np.sqrt)
 
     def _propagate_subtract(self, other_uncert, result_data, correlation):
         return super()._propagate_add_sub(other_uncert, result_data,
-                                          correlation, -1,
+                                          correlation, subtract=True,
                                           to_variance=lambda x: x**2,
                                           from_variance=np.sqrt)
 
@@ -708,11 +713,11 @@ class VarianceUncertainty(_VariancePropagationMixin, NDUncertainty):
 
     def _propagate_add(self, other_uncert, result_data, correlation):
         return super()._propagate_add_sub(other_uncert, result_data,
-                                          correlation, 1)
+                                          correlation, subtract=False)
 
     def _propagate_subtract(self, other_uncert, result_data, correlation):
         return super()._propagate_add_sub(other_uncert, result_data,
-                                          correlation, -1)
+                                          correlation, subtract=True)
 
     def _propagate_multiply(self, other_uncert, result_data, correlation):
         return super()._propagate_multiply_divide(other_uncert,
@@ -815,13 +820,13 @@ class InverseVariance(_VariancePropagationMixin, NDUncertainty):
 
     def _propagate_add(self, other_uncert, result_data, correlation):
         return super()._propagate_add_sub(other_uncert, result_data,
-                                          correlation, 1,
+                                          correlation, subtract=False,
                                           to_variance=_inverse,
                                           from_variance=_inverse)
 
     def _propagate_subtract(self, other_uncert, result_data, correlation):
         return super()._propagate_add_sub(other_uncert, result_data,
-                                          correlation, -1,
+                                          correlation, subtract=True,
                                           to_variance=_inverse,
                                           from_variance=_inverse)
 
