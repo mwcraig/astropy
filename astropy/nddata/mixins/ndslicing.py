@@ -35,7 +35,7 @@ class NDSlicingMixin:
         >>> mask = np.array([True, False, True, True, False])
         >>> nd2 = NDDataSliceable(nd, mask=mask)
         >>> nd2[1:3].mask
-        array([False,  True], dtype=bool)
+        array([False,  True]...)
 
     Be aware that changing values of the sliced instance will change the values
     of the original::
